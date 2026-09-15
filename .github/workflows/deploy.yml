@@ -1,36 +1,25 @@
 # Deploy naar GitHub Pages
 #
 # Deze workflow draait wanneer je naar de `main`- of `master`- branch pusht.
-# Hij bouwt de site en deployet hem naar GitHub Pages.
+# Hij bouwt de site en deployet hem naar de `gh-pages`-branch.
 
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches: ["main", "master"]
-  workflow_dispatch:  # hiermee kun je hem handmatig starten via de Actions-tab
+  workflow_dispatch:
 
-# Geef de job schrijf-rechten op de Pages-omgeving
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
-# Voorkom dat meerdere deploys tegelijk lopen
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
   build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    env:
-      # Sommige GitHub Actions (zoals configure-pages@v5) draaien nog intern
-      # op Node 20. Deze variabele staat dat tijdelijk toe.
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: "true"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -47,16 +36,10 @@ jobs:
       - name: Build de site
         run: npm run build
 
-      - name: Configureer GitHub Pages
-        uses: actions/configure-pages@v5
+      - name: Deploy naar GitHub Pages (gh-pages branch)
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          static_site_generator: "generic"
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
-
-      - name: Deploy naar GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          # cname: jouwdomein.nl  # optioneel: eigen domein
