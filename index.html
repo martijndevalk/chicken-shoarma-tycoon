@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chicken Shoarma Tycoon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="logo"><span>🐔</span><div>CHICKEN<br><b>SHOARMA TYCOON</b></div></div>
+        <div class="cash">KASSA <strong id="money">€ 0</strong></div>
+      </header>
+      <section class="stage-wrap">
+        <div id="game"></div>
+        <div id="instructions">Loop met de <b>pijltjestoetsen</b> in een cirkel en druk op <b>spatie</b>: grill → kassa → geld.</div>
+      </section>
+      <footer><span>DE ECHTE SIGMA FASE</span><span>★ GEEN MENUKAART, WEL AMBITIE ★</span></footer>
+    </main>
+    <div id="music-player" aria-hidden="true"></div>
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.min.js"></script>
+    <script type="module" src="game.js"></script>
+  </body>
+</html>
