@@ -1,0 +1,60 @@
+# Deploy naar GitHub Pages
+#
+# Deze workflow draait wanneer je naar de `main`- of `master`- branch pusht.
+# Hij bouwt de site en deployet hem naar GitHub Pages.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main", "master"]
+  workflow_dispatch:  # hiermee kun je hem handmatig starten via de Actions-tab
+
+
+
+# Geef de job schrijf-rechten op de Pages-omgeving
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Voorkom dat meerdere deploys tegelijk lopen
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Stel Node.js in
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Installeer dependencies
+        run: npm ci --omit=dev
+
+      - name: Build de site
+        run: npm run build
+
+      - name: Configureer GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          static_site_generator: "generic"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+      - name: Deploy naar GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

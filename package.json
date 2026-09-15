@@ -1,0 +1,15 @@
+{
+  "name": "chicken-shoarma-tycoon",
+  "version": "1.0.0",
+  "description": "🐔 Chicken Shoarma Tycoon - Een webgame gebouwd met Pixi.js",
+  "private": true,
+  "scripts": {
+    "build": "node build.js",
+    "dev": "npx serve .",
+    "preview": "npx serve dist",
+    "deploy": "npm run build"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
